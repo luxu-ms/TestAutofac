@@ -8,10 +8,36 @@ namespace TestAutofac.Controllers
 {
     public class HomeController : Controller
     {
+        public interface IMessageService
+        {
+            string GetMessage();
+        }
+
+        public class MessageService : IMessageService
+        {
+            public string GetMessage()
+            {
+                return "Hello from Autofac!";
+            }
+        }
+
+        private readonly IMessageService _messageService;
+
+        public HomeController(IMessageService messageService)
+        {
+            _messageService = messageService;
+        }
+
         public ActionResult Index()
         {
+            ViewBag.Message = _messageService.GetMessage();
             return View();
         }
+
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public ActionResult About()
         {
